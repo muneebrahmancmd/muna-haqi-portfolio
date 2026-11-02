@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+/* Class-based dark mode (.dark on <html>), matching production. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---- Fonts (owner's variable fonts, registered with production family names) ---- */
+@font-face {
+  font-family: "tiktok";
+  src: url("/fonts/TikTokSans.ttf") format("truetype");
+  font-weight: 100 900;
+  font-stretch: 75% 125%;
+  font-display: swap;
+}
+@font-face {
+  font-family: "mono";
+  src: url("/fonts/GeistMono[wght].ttf") format("truetype");
+  font-weight: 100 900;
+  font-display: block;
+}
+@font-face {
+  font-family: "tronica-mono";
+  src: url("/fonts/DepartureMono-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-display: swap;
+}
+
+/* ---- Tailwind v4 theme: semantic tokens map to indirected vars ---- */
+@theme {
+  --font-sans: "tiktok", sans-serif;
+  --font-mono: "mono", monospace;
+  --font-mono-2: "tronica-mono", monospace;
+
+  --color-l1: var(--label-1);
+  --color-l2: var(--label-2);
+  --color-l3: var(--label-3);
+  --color-l4: var(--label-4);
+  --color-line: var(--line);
+  --color-b1: var(--background-1);
+  --color-be: var(--background-elevated);
+  --color-selection: var(--selection-bg);
+  --color-black: #000;
+  --color-white: #fff;
+
+  --ease-66: var(--cubic-66);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* ---- Dynamic palette (light default + .dark override) ---- */
+:root {
+  color-scheme: light;
+  --label: 0, 0, 0;
+  --label-d: 54, 54, 48;
+  --background-deep: 251, 250, 244;
+
+  --label-1: rgba(var(--label), 1);
+  --label-2: rgba(var(--label-d), 0.6);
+  --label-3: rgba(var(--label-d), 0.32);
+  --label-4: rgba(var(--label-d), 0.18);
+  --line: rgba(var(--label-d), 0.1);
+  --background-1: rgb(var(--background-deep));
+  --background-elevated: #efede7;
+  --selection-bg: #c0fe04;
+  --cubic-66: cubic-bezier(0.66, 0, 0.01, 1);
+
+  --code-comment: rgba(var(--label-d), 0.45);
+  --code-string: #00784a;
+  --code-number: #8a6a00;
+  --code-keyword: #5e53e3;
+  --code-function: #0077bc;
+  --code-tag: #c0434c;
+  --code-operator: rgba(var(--label-d), 0.75);
+}
+
+.dark {
+  color-scheme: dark;
+  --label: 255, 255, 255;
+  --label-d: 230, 232, 232;
+  --background-deep: 15, 17, 17;
+
+  --label-4: rgba(var(--label-d), 0.16);
+  --line: rgba(var(--label-d), 0.08);
+  --background-elevated: #191b1b;
+
+  --code-comment: rgba(var(--label-d), 0.5);
+  --code-string: #80daac;
+  --code-number: #ebc669;
+  --code-keyword: #afb6ff;
+  --code-function: #8dcbff;
+  --code-tag: #ffa3a3;
+  --code-operator: rgba(var(--label-d), 0.85);
+}
+
+/* ---- Base ---- */
+html,
+body {
+  height: 100%;
+}
+body {
+  background: var(--color-b1);
+  color: var(--color-l1);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overscroll-behavior: none;
+}
+
+::selection {
+  background-color: var(--selection-bg);
+  color: #000;
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
